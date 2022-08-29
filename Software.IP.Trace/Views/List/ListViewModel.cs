@@ -53,7 +53,7 @@ namespace Software.IP.Trace.Views.List {
                     .ToObservable()
                     .Where(ip => ip.IsSelected)
                     .Select(ip => ip.IP)
-                    .Do(ip => _ipService.Delete(ip)))
+                    .SelectMany(ip => _ipService.Delete(ip).ToObservable()))
                 .LastOrDefaultAsync()
                 .SelectMany(_ => Reload().ToObservable())
                 .ToTask();

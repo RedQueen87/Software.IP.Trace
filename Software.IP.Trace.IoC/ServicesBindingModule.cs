@@ -1,4 +1,5 @@
-﻿using Ninject.Modules;
+﻿using LiteDB;
+using Ninject.Modules;
 using Software.IP.Trace.Services.Ips;
 using Software.IP.Trace.Services.IpStack;
 
@@ -9,5 +10,9 @@ public class ServicesBindingModule : NinjectModule {
         Bind<HttpClient>().ToSelf().InSingletonScope();
         Bind<IIpStackService>().To<IpStackService>();
         Bind<IIpService>().To<IpService>();
+        Bind<LiteDatabase>().ToMethod(_ => {
+            var dir = AppDomain.CurrentDomain.BaseDirectory;
+            return new LiteDatabase(@$"{dir}\local.db");
+        }).InSingletonScope();
     }
 }
